@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Formulario de tarea</title>
@@ -141,18 +141,21 @@
 
     <section class="page-title">
         <div>
-            <h2>Nueva tarea</h2>
+            <h2 th:text="${tarea.id != 0} ? 'Editar tarea' : 'Nueva tarea'">Nueva tarea</h2>
             <p>Completa los datos de la tarea.</p>
         </div>
 
-        <a class="btn btn-secondary" href="/tareas">
+        <a class="btn btn-secondary" th:href="@{/tareas}">
             Volver al listado
         </a>
     </section>
+    <div th:if="${error}" style="color:red;" th:text="${error}"></div>
 
     <section class="card">
 
-        <form class="task-form" action="/tareas" method="post">
+        <form method="post"
+              th:action="${tarea.id != 0} ? @{/tareas/{id}/editar(id=${tarea.id})} : @{/tareas}">
+
 
             <div class="form-group">
                 <label for="titulo">Título</label>
@@ -160,23 +163,20 @@
                         type="text"
                         id="titulo"
                         name="titulo"
-                        value="Preparar presentación del proyecto"
+                        th:value="${tarea.titulo}"
                         placeholder="Introduce el título de la tarea">
-                <p class="error-message">
-                    El título es obligatorio.
-                </p>
+
+
             </div>
 
             <div class="form-group">
                 <label for="descripcion">Descripción</label>
-                <textarea
-                        id="descripcion"
+                <textarea id="descripcion"
                         name="descripcion"
                         rows="5"
-                        placeholder="Describe la tarea">Crear una presentación inicial para explicar el estado del proyecto al equipo.</textarea>
-                <p class="error-message">
-                    La descripción es obligatoria.
-                </p>
+                        placeholder="Describe la tarea"
+                    th:text="${tarea.descripcion}"></textarea>
+
             </div>
 
             <div class="form-row">
@@ -185,9 +185,9 @@
                     <label for="estado">Estado</label>
                     <select id="estado" name="estado">
                         <option value="">Selecciona un estado</option>
-                        <option value="PENDIENTE" selected>Pendiente</option>
-                        <option value="EN_PROCESO">En proceso</option>
-                        <option value="COMPLETADA">Completada</option>
+                        <option value="PENDIENTE"  th:selected="${tarea.estado == 'PENDIENTE'}">Pendiente</option>
+                        <option value="EN_PROCESO" th:selected="${tarea.estado == 'EN_PROCESO'}">En proceso</option>
+                        <option value="COMPLETADA" th:selected="${tarea.estado == 'COMPLETADA'}">Completada</option>
                     </select>
                     <p class="error-message">
                         El estado es obligatorio.
@@ -198,13 +198,11 @@
                     <label for="prioridad">Prioridad</label>
                     <select id="prioridad" name="prioridad">
                         <option value="">Selecciona una prioridad</option>
-                        <option value="BAJA">Baja</option>
-                        <option value="MEDIA">Media</option>
-                        <option value="ALTA" selected>Alta</option>
+                        <option value="BAJA" th:selected="${tarea.prioridad == 'BAJA'}">Baja</option>
+                        <option value="MEDIA" th:selected="${tarea.prioridad == 'MEDIA'}">Media</option>
+                        <option value="ALTA" th:selected="${tarea.prioridad == 'ALTA'}">Alta</option>
                     </select>
-                    <p class="error-message">
-                        La prioridad es obligatoria.
-                    </p>
+
                 </div>
 
             </div>
@@ -217,10 +215,8 @@
                             type="date"
                             id="fechaLimite"
                             name="fechaLimite"
-                            value="2026-06-10">
-                    <p class="error-message">
-                        La fecha límite es obligatoria.
-                    </p>
+                            th:value="${tarea.fechaLimite}">
+
                 </div>
 
                 <div class="form-group checkbox-group">
@@ -228,7 +224,8 @@
                         <input
                                 type="checkbox"
                                 id="completada"
-                                name="completada">
+                                name="completada"
+                        th:checked="${tarea.completada}">
                         Tarea completada
                     </label>
                 </div>
@@ -237,27 +234,21 @@
 
             <div class="form-group">
                 <label for="empleadoId">Persona asignada</label>
-                <select id="empleadoId" name="empleadoId">
-                    <option value="">Selecciona una persona</option>
-                    <option value="1" selected>Laura Sánchez - laura.sanchez@empresa.com</option>
-                    <option value="2">Carlos Martín - carlos.martin@empresa.com</option>
-                    <option value="3">Marta López - marta.lopez@empresa.com</option>
-                    <option value="4">David García - david.garcia@empresa.com</option>
-                    <option value="5">Nerea Torres - nerea.torres@empresa.com</option>
+                <select id="empleadoId" name="empleado.id" >
+                    <option value="">Seleciona una persona</option>
+                    <option th:each="emp : ${empleados}"
+                            th:value="${emp.id}"
+                            th:text="${emp.nombre + ' - ' + emp.email}"
+                            th:selected="${tarea.empleado != null and tarea.empleado.id == emp.id}">
+                    </option>
                 </select>
-                <p class="error-message">
-                    Debes seleccionar una persona asignada.
-                </p>
+
             </div>
 
             <div class="form-actions">
-                <button class="btn btn-primary" type="submit">
-                    Guardar tarea
-                </button>
+                <button class="btn btn-primary" type="submit">Guardar tarea</button>
 
-                <a class="btn btn-secondary" href="/tareas">
-                    Cancelar
-                </a>
+                <a class="btn btn-secondary" th:href="@{/tareas}">Cancelar</a>
             </div>
 
         </form>

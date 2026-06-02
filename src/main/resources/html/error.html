@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Error</title>
@@ -89,16 +90,10 @@
     <section class="card error-card">
         <h2>No se ha podido completar la operación</h2>
 
-        <p>
-            Ha ocurrido un error al procesar la solicitud.
-        </p>
-
-        <p class="muted">
-            Revisa los datos introducidos o vuelve al listado de tareas.
-        </p>
+        <p class="muted" th:if="${error}" th:text="${error}"></p>
 
         <div class="form-actions">
-            <a class="btn btn-primary" href="/tareas">
+            <a class="btn btn-primary" th:href="@{/tareas}">
                 Volver al listado
             </a>
         </div>

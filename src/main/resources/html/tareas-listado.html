@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Listado de tareas</title>
@@ -181,7 +181,7 @@
             <p>Consulta las tareas registradas en la aplicación.</p>
         </div>
 
-        <a class="btn btn-primary" href="/tareas/nueva">
+        <a class="btn btn-primary" th:href="@{/tareas/nueva}">
             Nueva tarea
         </a>
     </section>
@@ -189,36 +189,47 @@
     <section class="card">
         <h3>Filtrar tareas</h3>
 
-        <form class="filter-form" action="/tareas" method="get">
+        <form class="filter-form" th:action="@{/tareas}" method="get">
+
             <div class="form-group">
                 <label for="filtro">Texto de búsqueda</label>
                 <input
                         type="text"
                         id="filtro"
                         name="filtro"
-                        placeholder="Buscar por título o descripción">
+                        placeholder="Buscar por título o descripción"
+                th:value="${filtro}">
             </div>
 
             <div class="form-group">
                 <label for="estado">Estado</label>
+
                 <select id="estado" name="estado">
+
                     <option value="">Todos</option>
-                    <option value="PENDIENTE">Pendiente</option>
-                    <option value="EN_PROCESO">En proceso</option>
-                    <option value="COMPLETADA">Completada</option>
+
+                    <option value="PENDIENTE" th:selected="${filtrarestado == 'PENDIENTE'}">Pendiente</option>
+
+                    <option value="EN_PROCESO" th:selected="${filtrarestado == 'EN_PROCESO'}">En proceso</option>
+
+                    <option value="COMPLETADA" th:selected="${filtrarestado == 'COMPLETADA'}">Completada</option>
+
                 </select>
             </div>
 
             <button class="btn btn-secondary" type="submit">
                 Aplicar filtro
             </button>
+
         </form>
     </section>
 
     <section class="card">
+
         <h3>Listado de tareas</h3>
 
         <table class="table">
+
             <thead>
             <tr>
                 <th>Título</th>
@@ -232,56 +243,50 @@
             </thead>
 
             <tbody>
-            <tr>
-                <td>Preparar presentación del proyecto</td>
-                <td>
-                    <span class="badge badge-warning">PENDIENTE</span>
-                </td>
-                <td>ALTA</td>
-                <td>2026-06-10</td>
-                <td>No</td>
-                <td>Laura Sánchez</td>
+
+            <tr th:each="tarea : ${tareas}">
+
+                <td th:text="${tarea.titulo}">Título</td>
+
+                <td><span class="badge" th:text="${tarea.estado}">ESTADO</span></td>
+
+                <td th:text="${tarea.prioridad}">ALTA</td>
+
+                <td th:text="${tarea.fechaLimite}">2026-06-10</td>
+
+                <td th:text="${tarea.completada ? 'Sí' : 'No'}">No</td>
+
+                <td th:text="${tarea.empleado.nombre}">Nombre empleado</td>
+
                 <td class="actions">
-                    <a class="btn btn-small" href="/tareas/1">Ver</a>
-                    <a class="btn btn-small btn-secondary" href="/tareas/1/editar">Editar</a>
+
+                    <a class="btn btn-small"
+                       th:href="@{/tareas/{id}(id=${tarea.id})}">
+                        Ver
+                    </a>
+
+                    <a class="btn btn-small btn-secondary"
+                       th:href="@{/tareas/{id}/editar(id=${tarea.id})}">
+                        Editar
+                    </a>
+
+
+
+                    </form>
+
                 </td>
+
             </tr>
 
-            <tr>
-                <td>Revisar documentación técnica</td>
-                <td>
-                    <span class="badge badge-info">EN_PROCESO</span>
-                </td>
-                <td>MEDIA</td>
-                <td>2026-06-14</td>
-                <td>No</td>
-                <td>Carlos Martín</td>
-                <td class="actions">
-                    <a class="btn btn-small" href="/tareas/2">Ver</a>
-                    <a class="btn btn-small btn-secondary" href="/tareas/2/editar">Editar</a>
-                </td>
-            </tr>
-
-            <tr>
-                <td>Cerrar tareas finalizadas</td>
-                <td>
-                    <span class="badge badge-success">COMPLETADA</span>
-                </td>
-                <td>BAJA</td>
-                <td>2026-05-30</td>
-                <td>Sí</td>
-                <td>David García</td>
-                <td class="actions">
-                    <a class="btn btn-small" href="/tareas/3">Ver</a>
-                    <a class="btn btn-small btn-secondary" href="/tareas/3/editar">Editar</a>
-                </td>
-            </tr>
             </tbody>
+
         </table>
 
-        <p class="empty-message">
+        <p class="empty-message"
+           th:if="${#lists.isEmpty(tareas)}">
             No hay tareas que mostrar.
         </p>
+
     </section>
 
 </main>

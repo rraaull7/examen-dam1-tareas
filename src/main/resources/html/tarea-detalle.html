@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Detalle de tarea</title>
@@ -167,7 +168,7 @@
             <p>Información completa de la tarea seleccionada.</p>
         </div>
 
-        <a class="btn btn-secondary" href="/tareas">
+        <a class="btn btn-secondary" th:href="@{/tareas}">
             Volver al listado
         </a>
     </section>
@@ -176,57 +177,52 @@
 
         <div class="detail-header">
             <div>
-                <h3>Preparar presentación del proyecto</h3>
-                <p class="muted">Identificador: 1</p>
+                <h3 th:text="${detalles.titulo}"></h3>
+                <p class="muted">Identificador:<span th:text="${detalles.id}"></span> </p>
             </div>
 
-            <span class="badge badge-warning">
-                PENDIENTE
-            </span>
-        </div>
+            <span class="badge"  th:text="${detalles.estado}"></span></div>
 
         <div class="detail-grid">
 
             <div class="detail-item">
                 <span class="label">Descripción</span>
-                <p>
-                    Crear una presentación inicial para explicar el estado del proyecto al equipo.
-                </p>
+                <p th:text="${detalles.descripcion}"></p>
             </div>
 
             <div class="detail-item">
                 <span class="label">Prioridad</span>
-                <p>ALTA</p>
+                <p th:text="${detalles.prioridad}"></p>
             </div>
 
             <div class="detail-item">
                 <span class="label">Fecha límite</span>
-                <p>2026-06-10</p>
+                <p th:text="${detalles.fechaLimite}"></p>
             </div>
 
             <div class="detail-item">
                 <span class="label">Completada</span>
-                <p>No</p>
+                <p th:text="${detalles.completada ? 'Si' : 'No'}"></p>
             </div>
 
             <div class="detail-item">
                 <span class="label">Persona asignada</span>
-                <p>Laura Sánchez</p>
+                <p th:text="${detalles.empleado.nombre}"></p>
             </div>
 
             <div class="detail-item">
                 <span class="label">Correo de la persona asignada</span>
-                <p>laura.sanchez@empresa.com</p>
+                <p th:text="${detalles.empleado.email}"></p>
             </div>
 
         </div>
 
         <div class="form-actions">
-            <a class="btn btn-primary" href="/tareas/1/editar">
+            <a class="btn btn-primary" th:href="@{/tareas/{id}/editar(id=${detalles.id})}">
                 Editar tarea
             </a>
 
-            <a class="btn btn-secondary" href="/tareas">
+            <a class="btn btn-secondary" th:href="@{/tareas}">
                 Volver
             </a>
         </div>
