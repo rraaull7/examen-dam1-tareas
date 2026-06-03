@@ -87,14 +87,15 @@ public class TareaController {
     @PostMapping("/{id}/eliminar")
     public String eliminar(@PathVariable Long id, RedirectAttributes redirectAttributes) {
 
-        try{
+        try {
             tareaService.deletebyId(id);
+
             redirectAttributes.addFlashAttribute("mensaje", "tarea eliminada bien");
-        }catch(Exception e){
+        } catch(Exception e){
             redirectAttributes.addFlashAttribute("error", "error al eliminar la tarea");
         }
 
-return "redirect:/tareas-listado";
+         return "redirect:/tareas-listado";
     }
 
 
