@@ -12,8 +12,8 @@ import lombok.Setter;
 @Getter
 public class Empleado {
 
- private long id;
- private String nombre;
- private String email;
+    private Long id;
+    private String nombre;
+    private String email;
 
 }
