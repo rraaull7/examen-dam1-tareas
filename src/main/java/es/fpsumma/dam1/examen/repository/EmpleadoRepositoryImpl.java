@@ -9,8 +9,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.Arrays.stream;
-
 @RequiredArgsConstructor
 @Repository
 public class EmpleadoRepositoryImpl implements EmpleadoRepository {
@@ -39,14 +37,14 @@ public class EmpleadoRepositoryImpl implements EmpleadoRepository {
 
     @Override
     public Optional<Empleado> findById(long id) {
-        String sql ="SELECT\n" +
+        String sql = "SELECT\n" +
                 "    id,\n" +
                 "    nombre,\n" +
                 "    email\n" +
                 "FROM empleados\n" +
                 "WHERE id = ?;";
         return jdbcTemplate.query(sql, empleadoRowMapper, id)
-        .stream()
+                .stream()
                 .findFirst();
 
     }

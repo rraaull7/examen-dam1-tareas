@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class Tarea {
-    private long id;
+    private Long id;
     private String titulo;
     private String descripcion;
     private String estado;

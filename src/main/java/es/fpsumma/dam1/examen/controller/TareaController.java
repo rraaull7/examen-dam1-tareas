@@ -66,7 +66,7 @@ public class TareaController {
     }
 
 
-@PostMapping("/{id}/editar")
+    @PostMapping("/{id}/editar")
     public String guardareditado(@PathVariable Long id, @ModelAttribute Tarea tarea, RedirectAttributes redirectAttributes) {
         try {
             tarea.setId(id);
@@ -74,31 +74,26 @@ public class TareaController {
             redirectAttributes.addFlashAttribute("mensaje", "tarea actualizada correctamente");
             return "redirect:/tareas";
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error",e.getMessage());
-            return  "redirect:/tareas/";
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/tareas";
         }
 
 
-
-
-}
+    }
 
 
     @PostMapping("/{id}/eliminar")
     public String eliminar(@PathVariable Long id, RedirectAttributes redirectAttributes) {
 
-        try{
+        try {
             tareaService.deletebyId(id);
             redirectAttributes.addFlashAttribute("mensaje", "tarea eliminada bien");
-        }catch(Exception e){
+        } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "error al eliminar la tarea");
         }
 
-return "redirect:/tareas-listado";
+        return "redirect:/tareas-listado";
     }
-
-
-
 
 
 }
