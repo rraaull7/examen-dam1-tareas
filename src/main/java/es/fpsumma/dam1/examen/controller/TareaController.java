@@ -51,10 +51,10 @@ public class TareaController {
         try {
             tareaService.save(tarea);
             redirectAttributes.addFlashAttribute("mensaje", "mensaje guardado bien");
-            return "redirect:/tareas";
+            return "redirect:/tareas-listado";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
-            return "redirect:/tareas-listado";
+            return "redirect:/tareas";
         }
     }
 
